@@ -7,10 +7,10 @@ export interface PokemonInfos {
     cries: {
         latest: string
     }
-    stats: [
+    stats: {
         stat: {
             name: string
-        },
+        };
         base_stat: number
-    ]
+    }[]
 }
