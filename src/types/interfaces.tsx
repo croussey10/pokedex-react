@@ -1,6 +1,6 @@
 export interface PokemonInfos {
-    id: number,
-    name: string,
+    id: number;
+    name: string;
     sprites: {
         front_default: string
     }
@@ -12,5 +12,12 @@ export interface PokemonInfos {
             name: string
         };
         base_stat: number
+    }[]
+}
+
+export interface PokemonResource {
+    count: number;
+    results: {
+        name: string
     }[]
 }
