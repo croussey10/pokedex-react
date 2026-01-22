@@ -1,6 +1,6 @@
 import {Link} from "react-router";
 // import {Pokemon} from "./pokemonPage.tsx";
-import type {PokemonResource} from "./types/interfaces.tsx";
+import type {PokemonInfos, PokemonResource} from "./types/interfaces.tsx";
 import {useEffect, useState} from "react";
 
 export function Pokedex() {
@@ -21,6 +21,21 @@ export function Pokedex() {
     }, [offset]);
 
     console.log(listPokemonsPagination);
+
+    useEffect(() => {
+        const fetchListPokemons = async () => {
+            if (!listPokemonsPagination) {
+                return;
+            }
+            const promises = listPokemonsPagination.map(async (name) => {
+                const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+                return response.json();
+            });
+            const fullPokemonsData = await Promise.all(promises);
+            console.log(fullPokemonsData);
+        }
+        void fetchListPokemons()
+    }, [listPokemonsPagination]);
 
     const nextPage = () => {
         setOffset(offset + 20)
