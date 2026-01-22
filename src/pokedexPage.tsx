@@ -1,5 +1,4 @@
 import {Link} from "react-router";
-// import {Pokemon} from "./pokemonPage.tsx";
 import type {PokemonInfos, PokemonResource} from "./types/interfaces.tsx";
 import {useEffect, useState} from "react";
 
@@ -8,6 +7,25 @@ export function Pokedex() {
     const pokemon = "bulbasaur";
     const [offset, setOffset] = useState(0);
     const [listPokemonsPagination, setListPokemonsPagination] = useState<string[]>();
+    const POKEMON_LIST_CACHE = "pokemonListCache";
+
+    const test = async () => {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=1400`);
+        const data: PokemonResource = await response.json();
+
+        const simplifiedPokemons = data.results.map((pokemon) => ({
+            name: pokemon.name,
+            id: pokemon.url.split("/").filter(Boolean).pop()
+        }));
+
+        localStorage.setItem(POKEMON_LIST_CACHE, JSON.stringify(simplifiedPokemons));
+        const pokemonList = localStorage.getItem(POKEMON_LIST_CACHE);
+        console.log(JSON.parse(pokemonList!));
+    }
+
+    if (!localStorage.getItem(POKEMON_LIST_CACHE)) {
+        test()
+    }
 
     useEffect(() => {
         const listPokemons = async () => {

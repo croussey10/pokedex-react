@@ -19,5 +19,6 @@ export interface PokemonResource {
     count: number;
     results: {
         name: string
+        url: string
     }[]
 }
