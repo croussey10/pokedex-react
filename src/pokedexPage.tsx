@@ -8,8 +8,9 @@ export function Pokedex() {
     const [offset, setOffset] = useState(0);
     const [listPokemonsPagination, setListPokemonsPagination] = useState<string[]>();
     const POKEMON_LIST_CACHE = "pokemonListCache";
+    const [pokemonListParse, setPokemonListParse] = useState([]);
 
-    const test = async () => {
+    const fetchAllPokemons = async () => {
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=1400`);
         const data: PokemonResource = await response.json();
 
@@ -19,13 +20,17 @@ export function Pokedex() {
         }));
 
         localStorage.setItem(POKEMON_LIST_CACHE, JSON.stringify(simplifiedPokemons));
-        const pokemonList = localStorage.getItem(POKEMON_LIST_CACHE);
-        console.log(JSON.parse(pokemonList!));
+        setPokemonListParse(JSON.parse(localStorage.getItem(POKEMON_LIST_CACHE)!));
     }
 
     if (!localStorage.getItem(POKEMON_LIST_CACHE)) {
-        test()
+        void fetchAllPokemons();
     }
+
+    useEffect(() => {
+        console.log(pokemonListParse)
+        console.log(pokemonListParse.slice(offset, 20 + offset));
+    }, [offset, pokemonListParse]);
 
     useEffect(() => {
         const listPokemons = async () => {
